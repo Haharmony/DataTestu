@@ -65,6 +65,31 @@ public class Tree
         Debug.Log(current.data + ", ");
         PrintInOrderRecursive(current.right);
     }
+
+    private void PrintInReverseRecursive(Node current)
+    {
+        if (current == null)
+        {
+            return;
+        }
+
+        Debug.Log(current.data + ", ");
+        PrintInReverseRecursive(current.left);
+        PrintInReverseRecursive(current.right);
+    }
+
+    private void PrintInPostOrderRecursive(Node current)
+    {
+        if (current == null)
+        {
+            return;
+        }
+
+        PrintInPostOrderRecursive(current.left);
+        PrintInPostOrderRecursive(current.right);
+        Debug.Log(current.data + ", ");
+    }
+
     public void PrintInOrder()
     {
         PrintInOrderRecursive(root);
@@ -72,6 +97,11 @@ public class Tree
 
     public void PrintInReverse()
     {
+        PrintInReverseRecursive(root);
+    }
 
+    public void PrintInPostOrder()
+    {
+        PrintInPostOrderRecursive(root);
     }
 }
