@@ -34,6 +34,43 @@ public class Tree
         return current;
     }
 
+    public void DeleteNode(int data)
+    {
+        if(root == null)
+        {
+            return;
+        }
+
+        Node result = FindRecursive(root, data);
+        Node prev_result = FindPrevRecursive(root, data);
+
+        //CASE 1
+        if(data == result.data && prev_result.right == result && result.right == null && result.left == null)
+        {
+            prev_result.right = null;
+        }
+        if(data == result.data && prev_result.left == result && result.right == null && result.left == null)
+        {
+            prev_result.left = null;
+        }
+
+        //CASE 2
+        if (data == result.data && prev_result.right == result && (result.right != null || result.left != null))
+        {
+            if(result.right == null)
+            {
+                prev_result.right = result.left;
+            }
+            
+            result.right = null;
+        }
+        if (data == result.data && prev_result.left == result && result.left != null)
+        {
+            prev_result.left = result.left;
+            result.left = null;
+        }
+    }
+
     public bool Find(int data)
     {
         Node result = FindRecursive(root, data);
@@ -52,6 +89,20 @@ public class Tree
         }
 
         return FindRecursive(current.right, data);
+    }
+
+    public Node FindPrevRecursive(Node current, int data)
+    {
+        if(current == null || current.right.data == data || current.left.data == data)
+        {
+            return current;
+        }
+
+        if (data < current.data)
+        {
+            return FindPrevRecursive(current.left, data);
+        }
+        return FindPrevRecursive(current.right, data);
     }
 
     private void PrintInOrderRecursive(Node current)
