@@ -36,7 +36,7 @@ public class Tree
 
     public void DeleteNode(int data)
     {
-        if(root == null)
+        if (root == null)
         {
             return;
         }
@@ -45,30 +45,79 @@ public class Tree
         Node prev_result = FindPrevRecursive(root, data);
 
         //CASE 1
-        if(data == result.data && prev_result.right == result && result.right == null && result.left == null)
+        if (data == result.data && result.right == null && result.left == null)
         {
-            prev_result.right = null;
-        }
-        if(data == result.data && prev_result.left == result && result.right == null && result.left == null)
-        {
-            prev_result.left = null;
+            if (prev_result.right == result)
+                prev_result.right = null;
+
+            if (prev_result.left == result)
+                prev_result.left = null;
+
+            Debug.Log("CASE 1");
         }
 
         //CASE 2
-        if (data == result.data && prev_result.right == result && (result.right != null || result.left != null))
+        if (data == result.data && prev_result.right == result && (result.right == null || result.left == null))
         {
-            if(result.right == null)
+            Debug.Log("THIS IS THE PREV: " + prev_result.data);
+            Debug.Log("CASE 2");
+
+            if (result.right == null)
             {
                 prev_result.right = result.left;
+                result.left = null;
+            }
+            else
+            {
+                prev_result.right = result.right;
+                result.right = null;
+            }         
+        }
+
+        if (data == result.data && prev_result.left == result && (result.right == null || result.left == null))
+        {
+            Debug.Log("THIS IS THE PREV: " + prev_result.data);
+            Debug.Log("CASE 2");
+            if (result.right == null)
+            {
+                prev_result.left = result.left;
+                result.left = null;
+            }
+            else
+            {
+                prev_result.left = result.right;
+                result.right = null;
+            }           
+        }
+
+        //CASE 3
+        if (data == result.data && result.right != null && result.left != null)
+        {
+            Debug.Log("CASE 3");
+            Node minValue = FindMinNode(result.right);
+            Node prev_temp = FindPrevRecursive(root, minValue.data);
+            result.data = minValue.data;
+
+            if (prev_temp.right == minValue)
+            {
+                prev_temp.right = null;
+            }
+            else
+            {
+                prev_temp.left = null;
             }
             
-            result.right = null;
-        }
-        if (data == result.data && prev_result.left == result && result.left != null)
+        }    
+    }
+
+    private Node FindMinNode(Node node)
+    {
+        while(node.left != null)
         {
-            prev_result.left = result.left;
-            result.left = null;
+            node = node.left;
         }
+
+        return node;
     }
 
     public bool Find(int data)
